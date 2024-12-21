@@ -1,0 +1,65 @@
+Psuedocode For Project 2 Airbead Banking App
+BEGIN Airgead Banking App
+ // Step 1: Display Input Prompt
+ DISPLAY "Welcome to the Airgead Banking App!"
+ 
+ REPEAT
+ DISPLAY "Enter Initial Investment Amount:"
+ GET initialInvestment
+ DISPLAY "Enter Monthly Deposit:"
+ GET monthlyDeposit
+ DISPLAY "Enter Annual Interest Rate (%):"
+ GET annualInterestRate
+ DISPLAY "Enter Number of Years:"
+ GET numberOfYears
+ // Step 2: Validate User Input
+ IF initialInvestment <= 0 OR monthlyDeposit < 0 OR 
+annualInterestRate < 0 OR numberOfYears <= 0 THEN
+ DISPLAY "Invalid input. Please enter positive numbers."
+ ELSE
+ BREAK // Input is valid, exit the loop
+ END IF
+ UNTIL FALSE // Infinite loop until valid input is received
+ // Step 3: Display Entered Values
+ DISPLAY "Initial Investment Amount: $" + initialInvestment
+ DISPLAY "Monthly Deposit: $" + monthlyDeposit
+ DISPLAY "Annual Interest Rate: %" + annualInterestRate
+ DISPLAY "Number of Years: " + numberOfYears
+ DISPLAY "Press any key to continue..."
+ WAIT FOR USER INPUT // Wait for user to press a key
+ // Step 4: Generate Report Without Additional Monthly Deposits
+ SET balance = initialInvestment
+ DISPLAY "Year | Year-End Balance | Year-End Earned Interest"
+ 
+ FOR year FROM 1 TO numberOfYears DO
+ SET interest = balance * (annualInterestRate / 100)
+ SET balance = balance + interest
+ DISPLAY year + " | $" + ROUND(balance, 2) + " | $" + 
+ROUND(interest, 2)
+ END FOR
+ // Step 5: Generate Report With Additional Monthly Deposits
+ SET balance = initialInvestment
+ DISPLAY "Year | Year-End Balance | Year-End Earned Interest"
+ 
+ FOR month FROM 1 TO (numberOfYears * 12) DO
+ SET balance = balance + monthlyDeposit
+ SET interest = balance * ((annualInterestRate / 100) / 12)
+ SET balance = balance + interest
+ IF month MOD 12 == 0 THEN
+ SET totalYearlyEarnedInterest = interest * 12 // Total 
+interest earned in the year
+ DISPLAY (month / 12) + " | $" + ROUND(balance, 2) + " | $"
++ ROUND(totalYearlyEarnedInterest, 2)
+ END IF
+ END FOR
+ // Step 6: Allow User to Test Different Scenarios
+ DISPLAY "Would you like to test another scenario? (Y/N)"
+ GET userResponse
+ IF userResponse == "Y" THEN
+ GOTO Step 1 // Restart from Step 1
+ ELSE
+ // Step 7: Exit Program
+ DISPLAY "Thank you for using the Airgead Banking App!"
+ END
+ END IF
+END Airgead Banking App
