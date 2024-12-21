@@ -1,0 +1,97 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+using namespace std;
+
+// Function to display a welcome message
+void displayWelcome() {
+    cout << "Welcome to the Airgead Banking App!" << endl;
+}
+
+// Function to round values to two decimal points
+double roundToTwoDecimal(double value) {
+    return round(value * 100.0) / 100.0;
+}
+
+int main() {
+    double initialInvestment, monthlyDeposit, annualInterestRate;
+    int numberOfYears;
+    char userResponse;
+
+    do {
+        // Step 1: Display input prompt and get user inputs
+        displayWelcome();
+
+        // Input prompt and validation loop
+        while (true) {
+            cout << "Enter Initial Investment Amount (positive value): ";
+            cin >> initialInvestment;
+
+            cout << "Enter Monthly Deposit (positive or zero): ";
+            cin >> monthlyDeposit;
+
+            cout << "Enter Annual Interest Rate (%) (positive or zero): ";
+            cin >> annualInterestRate;
+
+            cout << "Enter Number of Years (positive integer): ";
+            cin >> numberOfYears;
+
+            // Step 2: Validate inputs
+            if (initialInvestment <= 0 || monthlyDeposit < 0 || annualInterestRate < 0 || numberOfYears <= 0) {
+                cout << "Invalid input. Please enter positive numbers where applicable." << endl;
+            }
+            else {
+                break; // Input is valid; exit loop
+            }
+        }
+
+        // Step 3: Display entered values
+        cout << "\nInitial Investment Amount: $" << fixed << setprecision(2) << initialInvestment << endl;
+        cout << "Monthly Deposit: $" << fixed << setprecision(2) << monthlyDeposit << endl;
+        cout << "Annual Interest Rate: " << fixed << setprecision(2) << annualInterestRate << "%" << endl;
+        cout << "Number of Years: " << numberOfYears << endl;
+        cout << "Press Enter to continue..." << endl;
+        cin.ignore();
+        cin.get();
+
+        // Step 4: Generate report without monthly deposits
+        cout << "\nBalance and Interest Without Additional Monthly Deposits\n";
+        cout << "Year\tYear-End Balance\tYear-End Earned Interest\n";
+
+        double balance = initialInvestment;
+        for (int year = 1; year <= numberOfYears; ++year) {
+            double interest = balance * (annualInterestRate / 100);
+            balance += interest; // Add interest to balance
+            cout << year << "\t$" << fixed << setprecision(2) << balance << "\t\t$" << roundToTwoDecimal(interest) << endl;
+        }
+
+        // Step 5: Generate report with monthly deposits
+        cout << "\nBalance and Interest With Additional Monthly Deposits\n";
+        cout << "Year\tYear-End Balance\tYear-End Earned Interest\n";
+
+        balance = initialInvestment;
+        for (int month = 1; month <= numberOfYears * 12; ++month) {
+            balance += monthlyDeposit; // Add monthly deposit
+            double monthlyInterest = balance * ((annualInterestRate / 100) / 12);
+            balance += monthlyInterest; // Add monthly interest
+
+            // At the end of the year, display yearly results
+            if (month % 12 == 0) {
+                int year = month / 12;
+                double totalYearlyEarnedInterest = monthlyInterest * 12;
+                cout << year << "\t$" << fixed << setprecision(2) << balance << "\t\t$"
+                    << roundToTwoDecimal(totalYearlyEarnedInterest) << endl;
+            }
+        }
+
+        // Step 6: Ask the user if they want to test another scenario
+        cout << "\nWould you like to test another scenario? (Y/N): ";
+        cin >> userResponse;
+
+    } while (toupper(userResponse) == 'Y'); // Repeat if the user enters 'Y'
+
+    // Step 7: Exit the program
+    cout << "\nThank you for using the Airgead Banking App!" << endl;
+
+    return 0;
+}
